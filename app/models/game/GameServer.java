@@ -19,18 +19,13 @@ import static akka.pattern.Patterns.ask;
 
 public class GameServer extends UntypedActor {
 	// Default actor
-	static GameServer thisInstance = new GameServer();
-	public static GameServer getInstance() {
-		return thisInstance;
-	}
-
-    static ActorRef defaultServer = Akka.system().actorOf(new Props(GameServer.class));
-//	static ActorRef defaultServer = Akka.system().actorOf(new Props(
-//				new UntypedActorFactory() {
-//					public UntypdedActor create() {
-//						return new MyActor("......");
-//					}
-//				}), "myactor");
+    static ActorRef defaultServer = Akka.system().actorOf(new Props(GameServer.class)
+//			new Props(new UntypedActorFactory() {
+//				public UntypedActor create() {
+//					return thisInstance;
+//				}
+//			})
+	);
     
 	private HashMap<Integer, Table> freeTables, busyTables;
 	private int freeTableNum, busyTableNum;
@@ -45,7 +40,7 @@ public class GameServer extends UntypedActor {
 	public void postStop() {
 	}
 
-	private GameServer() {
+	public GameServer() {
 		configs = ConfigFactory.load("../../../conf/game.conf");
 		int initTableNum = configs.getInt("initTableNum");
 		freeTables = new HashMap<Integer, Table>(initTableNum);
@@ -53,6 +48,7 @@ public class GameServer extends UntypedActor {
 		for (int i = 0; i <initTableNum; ++i) {
 			freeTables.put(i, new Table(i, tableSize));
 		}
+		Logger.error("tableSize: " + tableSize + "initTableNum: " + initTableNum);
 	}
 
 	public Table getATable() {
@@ -93,24 +89,12 @@ public class GameServer extends UntypedActor {
 		}
 		return newTable;
 	}
- 
-	public HashMap<Integer, Table> getFreeTables() {
-		return freeTables;
-	}
 
-	public HashMap<Integer, Table> getBusyTables() {
-		return busyTables;
-	}
     /**
      * Join a table.
      */
     public static void join(final int userId, final int tableId,
 			WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out) throws Exception{
-		Table toJoinTable = GameServer.getInstance().getFreeTables().get(tableId);
-		if (toJoinTable == null) {
-			Logger.error ("get table failed " + tableId);
-			return;
-		}
         // Send the Join message to the room
         String result = (String)Await.result(
 				ask(defaultServer, new Join(userId, tableId, out), 1000), Duration.create(1, SECONDS));
@@ -125,7 +109,7 @@ public class GameServer extends UntypedActor {
                    
                } 
             });
-            
+
             // When the socket is closed.
             in.onClose(new Callback0() {
                public void invoke() {
@@ -160,6 +144,10 @@ public class GameServer extends UntypedActor {
                 getSender().tell("This userId is already used");
             } else {
                 members.put(join.userId, join.outWs);
+
+				Table table = freeTables.get(join.tableId);
+				table.addUser(join.userId);
+
                 notifyAll("join", join.userId, "has entered the room");
                 getSender().tell("OK");
             }
@@ -173,6 +161,8 @@ public class GameServer extends UntypedActor {
             Quit quit = (Quit)message;
             
             members.remove(quit.userId);
+			Table table = busyTables.get(quit.userId);
+			table.removeUser(quit.userId);
             
             notifyAll("quit", quit.userId, "has leaved the room");
         } else {
@@ -212,8 +202,6 @@ public class GameServer extends UntypedActor {
         public Join(int userId, int tableId, WebSocket.Out<JsonNode> outWs) {
             this.userId = userId;
 			this.tableId = tableId;
-			Table table = GameServer.getInstance().getFreeTables().get(tableId);
-			table.addUser(userId);
             this.outWs = outWs;
         }
     }

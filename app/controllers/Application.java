@@ -22,18 +22,18 @@ public class Application extends Controller {
     /**
      * Display the chat room.
      */
-    public static Result chatRoom(final int username, final int tableId) {
-        if(username == 0) {
-            flash("error", "Please choose a valid username.");
+    public static Result chatRoom(final int userId, final int tableId) {
+        if(userId == 0 || tableId == 0) {
+            flash("error", "Please choose a valid userId.");
             return redirect(routes.Application.index());
         }
-        return ok(chatRoom.render(username, tableId));
+        return ok(chatRoom.render(userId, tableId));
     }
     
     /**
      * Handle the chat websocket.
      */
-    public static WebSocket<JsonNode> chat(final int username, final int tableId) {
+    public static WebSocket<JsonNode> chat(final int userId, final int tableId) {
         return new WebSocket<JsonNode>() {
             
             // Called when the Websocket Handshake is done.
@@ -41,7 +41,7 @@ public class Application extends Controller {
                 
                 // Join the chat room.
                 try { 
-                    GameServer.join(username, tableId, in, out);
+                    GameServer.join(userId, tableId, in, out);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

@@ -1,14 +1,14 @@
-@(username: Integer, tableId: Integer)
+@(userId: Integer, tableId: Integer)
 
-@main(username, tableId) {
+@main(userId, tableId) {
     
     <div class="page-header">
-        <h1>Welcome to the chat room <small>You are chatting as @username</small></h1>
+        <h1>Welcome to the chat room <small>You are chatting as @userId</small></h1>
     </div>
     
     <div id="onError" class="alert-message error">
         <p>
-            <strong>Oops!</strong> <span></span>
+            <strong>Oops!</strong><span></span>
         </p>
     </div>
     
@@ -29,7 +29,7 @@
     
         $(function() {
             var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket;
-	        var chatSocket = new WS("@routes.Application.chat(username, tableId).webSocketURL(request)");
+	        var chatSocket = new WS("@routes.Application.chat(userId, tableId).webSocketURL(request)");
             
             var sendMessage = function() {
                 chatSocket.send(JSON.stringify(
@@ -56,7 +56,7 @@
                 $("span", el).text(data.user);
                 $("p", el).text(data.message);
                 $(el).addClass(data.kind);
-				if(data.user == '@username') {
+				if(data.user == '@userId') {
 					$(el).addClass('me');
 				}
                 $('#messages').append(el);

@@ -1,10 +1,10 @@
-@(connected: Integer, tableId: Integer)(content: Html)
+@(userId: Integer, tableId: Integer)(content: Html)
 
 <!DOCTYPE html>
 
 <html>
     <head>
-        <title>Websocket Chat-Room</title>
+        <title>CrazyDice</title>
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
@@ -15,17 +15,17 @@
         <div class="topbar">
             <div class="fill">
                 <div class="container">
-                    <a class="brand" href="@routes.Application.index()">Websocket Chat-Room</a>
+                    <a class="brand" href="@routes.Application.index()">CrazyDice</a>
                     
-                    @if(connected != null) {
+                    @if(userId != 0 && tableId != 0) {
                         <p class="pull-right">
-                            Logged in as @connected —
+                            Logged in as @userId —
                             <a href="@routes.Application.index()">Disconnect</a>
                         </p>
                     } else {
-                        <form action="@routes.Application.chatRoom()" class="pull-right">
-                            <input id="username" name="username" class="input-small" type="text" placeholder="Username">
-                            <input id="tableId" name="tableId" class="input-small" type="text" placeholder="TableId">
+                        <form action="@routes.Application.chatRoom(userId, tableId)" class="pull-right">
+                            <input id="userId" name="userId" class="input-small" type="text" placeholder="userId">
+                            <input id="tableId" name="tableId" class="input-small" type="text" placeholder="tableId">
                             <button class="btn" type="submit">Sign in</button>
                         </form>
                     }
