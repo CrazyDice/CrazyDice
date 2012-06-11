@@ -41,14 +41,14 @@ public class GameServer extends UntypedActor {
 	}
 
 	public GameServer() {
-		configs = ConfigFactory.load("../../../conf/game.conf");
-		int initTableNum = configs.getInt("initTableNum");
+		configs = ConfigFactory.load("game.conf");
+		int initTableNum = configs.getInt("initTablesNum");
 		freeTables = new HashMap<Integer, Table>(initTableNum);
 		int tableSize = configs.getInt("tableSize");
 		for (int i = 0; i <initTableNum; ++i) {
 			freeTables.put(i, new Table(i, tableSize));
 		}
-		Logger.error("tableSize: " + tableSize + "initTableNum: " + initTableNum);
+		Logger.of("gameserver").info("tableSize: " + tableSize + " initTableNum: " + initTableNum);
 	}
 
 	public Table getATable() {
@@ -77,7 +77,7 @@ public class GameServer extends UntypedActor {
 			for (int i = 0; i <newTableNum; ++i) {
 				tmpNewTables[i] = new Table(freeTableNum + i, tableSize);
 				if (tmpNewTables[i] == null) {
-					Logger.error("can't allocate a new table");
+					Logger.of("gameserver").error("can't allocate a new table");
 					break;
 				} else {
 					newId++;
@@ -97,7 +97,7 @@ public class GameServer extends UntypedActor {
 			WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out) throws Exception{
         // Send the Join message to the room
         String result = (String)Await.result(
-				ask(defaultServer, new Join(userId, tableId, out), 1000), Duration.create(1, SECONDS));
+				ask(defaultServer, new Join(userId, tableId, out), 3000), Duration.create(1, SECONDS));
         
         if ("OK".equals(result)) {
             // For each event received on the socket,

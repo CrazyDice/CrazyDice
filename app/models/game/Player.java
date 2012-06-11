@@ -17,12 +17,12 @@ import static java.util.concurrent.TimeUnit.*;
 public class Player {
 	private WebSocket.Out<JsonNode> outWs;
     
-    public Player(ActorRef GameServer, int uid, int tableId) {
+    public Player(ActorRef GameServer, int userId, int tableId) {
         
         // Create a Fake socket out for the Player that log events to the console.
         outWs = new WebSocket.Out<JsonNode>() {
             public void write(JsonNode frame) {
-                Logger.of("Player").info(Json.stringify(frame));
+                Logger.of("player").info(Json.stringify(frame));
             }
             
             public void close() {}
@@ -30,7 +30,7 @@ public class Player {
         };
         
         // Join the room
-        GameServer.tell(new GameServer.Join(uid, tableId, outWs));
+        GameServer.tell(new GameServer.Join(userId, tableId, outWs));
         
         // Make the Player talk every 30 seconds
 //        Akka.system().scheduler().schedule(

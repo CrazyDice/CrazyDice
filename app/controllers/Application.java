@@ -38,6 +38,7 @@ public class Application extends Controller {
             
             // Called when the Websocket Handshake is done.
             public void onReady(WebSocket.In<JsonNode> in, WebSocket.Out<JsonNode> out){
+				Logger.info("userId: " + userId + " tableId: " + tableId);
                 
                 // Join the chat room.
                 try { 
