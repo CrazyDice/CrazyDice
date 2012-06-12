@@ -3,7 +3,7 @@
 @main(userId, tableId) {
     
     <div class="page-header">
-        <h1>Welcome to the chat room <small>You are chatting as @userId</small></h1>
+        <h1>Welcome to the game room <small>You are logging in as @userId</small></h1>
     </div>
     
     <div id="onError" class="alert-message error">
@@ -29,10 +29,10 @@
     
         $(function() {
             var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket;
-	        var chatSocket = new WS("@routes.Application.chat(userId, tableId).webSocketURL(request)");
+	        var playerSocket = new WS("@routes.Application.entry(userId, tableId).webSocketURL(request)");
             
             var sendMessage = function() {
-                chatSocket.send(JSON.stringify(
+                playerSocket.send(JSON.stringify(
                     {text: $("#talk").val()}
                 ));
                 $("#talk").val('');
@@ -43,7 +43,7 @@
                 
                 // Handle errors
                 if(data.error) {
-                    chatSocket.close();
+                    playerSocket.close();
                     $("#onError span").text(data.error);
                     $("#onError").show();
                     return;
@@ -76,7 +76,7 @@
             };
             
             $("#talk").keypress(handleReturnKey);            
-            chatSocket.onmessage = receiveEvent;
+            playerSocket.onmessage = receiveEvent;
         })
     
     </script>

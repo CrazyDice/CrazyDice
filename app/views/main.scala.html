@@ -23,7 +23,7 @@
                             <a href="@routes.Application.index()">Disconnect</a>
                         </p>
                     } else {
-                        <form action="@routes.Application.chatRoom(userId, tableId)" class="pull-right">
+                        <form action="@routes.Application.game(userId, tableId)" class="pull-right">
                             <input id="userId" name="userId" class="input-small" type="text" placeholder="userId">
                             <input id="tableId" name="tableId" class="input-small" type="text" placeholder="tableId">
                             <button class="btn" type="submit">Sign in</button>
