@@ -160,11 +160,14 @@ public class GameServer extends UntypedActor {
             // Received a Quit message
             Quit quit = (Quit)message;
             
-            members.remove(quit.userId);
-			Table table = busyTables.get(quit.userId);
-			table.removeUser(quit.userId);
-            
-            notifyAll("quit", quit.userId, "has leaved the room");
+			if (quit == null) {
+				Logger.of("gameserver").info("quit is null");
+				Table table = busyTables.get(quit.userId);
+				table.removeUser(quit.userId);
+				
+				members.remove(quit.userId);
+				notifyAll("quit", quit.userId, "has leaved the room");
+			}
         } else {
             unhandled(message);
         }
