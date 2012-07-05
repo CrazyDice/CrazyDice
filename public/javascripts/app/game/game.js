@@ -1,4 +1,4 @@
-gameCrazyDice = gameCrazyDice || $.extend ({
+gameCrazyDice =  {
 	init: function(wsUrl) {
 		var ws = window['MozWebSocket'] ? MozWebSocket : WebSocket;
 		this.wsUrl = wsUrl;
@@ -51,8 +51,8 @@ gameCrazyDice = gameCrazyDice || $.extend ({
 		if(e.charCode == 13 || e.keyCode == 13) {
 			e.preventDefault();
 			sendMessage();
-		} 
-}
-});
+		}
+	}
+};
 
 
