@@ -1,7 +1,6 @@
 @(userId: Integer, tableId: Integer)
 @import models.game._
 @main(userId, tableId) {
-    
     <div class="page-header">
         <h1>Welcome to the game room <small>You are logging in as @userId</small></h1>
     </div>
@@ -13,9 +12,7 @@
     </div>
     
     <div id="onChat" class="row">
-        <div class="span10" id="main">
-            
-        </div>
+        <div class="span10" id="main"></div>
         <div class="span4">
             <h2>Players</h2>
 			<ul id="members"></ul>
@@ -23,10 +20,4 @@
             <textarea id="talk"></textarea>
         </div>
     </div>
-
-	<script src="@routes.Assets.at(GameConfigs.getAssetPath("game.js"))" type="type/javascript" charset="utf-8"></script>
-    <script type="text/javascript" charset="utf-8">
-		gameCrazyDice.init("@routes.Application.entry(userId, tableId).webSocketURL(request)");   
-		console.log(gameCrazyDice);
-    </script>
 }
