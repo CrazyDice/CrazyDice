@@ -9,7 +9,7 @@
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-		<script src="@routes.Assets.at(GameConfigs.getAssetPath("zepto.js"))" type="text/javascript" charset="utf-8"></script>
+		<script src="@routes.Assets.at(GameConfigs.getAssetPath("jq.mobi.js"))" type="text/javascript" charset="utf-8"></script>
     </head>
     <body>
         
@@ -46,10 +46,15 @@
                     <a href="http://www.CrazyDice.com">www.CrazyDice.com</a>
                 </p>
             </footer>
-
         </div>
 
         <script src="@routes.Assets.at(GameConfigs.getAssetPath("modernizr.js"))" type="text/javascript" charset="utf-8"></script>       
-
+		<script src="@routes.Assets.at(GameConfigs.getAssetPath("game.js"))" type="type/javascript" charset="utf-8"></script>
+	    <script type="text/javascript" charset="utf-8">
+	    	$(document).ready = function() {
+				game.init("@routes.Application.entry(userId, tableId).webSocketURL(request)");   
+				console.log(game);
+	    	};
+	    </script>
     </body>
 </html>
