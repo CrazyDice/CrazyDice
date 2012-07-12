@@ -3,57 +3,53 @@
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>CrazyDice</title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
-        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+	<head>
+		<title>CrazyDice</title>
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+		<link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
 		<script src="@routes.Assets.at(GameConfigs.getAssetPath("jq.mobi.js"))" type="text/javascript" charset="utf-8"></script>
-    </head>
-    <body>
-        
-        <div class="topbar">
-            <div class="fill">
-                <div class="container">
-                    <a class="brand" href="@routes.Application.index()">CrazyDice</a>
-                    
-                    @if(userId != 0 && tableId != 0) {
-                        <p class="pull-right">
-                            Logged in as @userId —
-                            <a href="@routes.Application.index()">Disconnect</a>
-                        </p>
-                    } else {
-                        <form action="@routes.Application.game(userId, tableId)" class="pull-right">
-                            <input id="userId" name="userId" class="input-small" type="text" placeholder="userId">
-                            <input id="tableId" name="tableId" class="input-small" type="text" placeholder="tableId">
-                            <button class="btn" type="submit">Sign in</button>
-                        </form>
-                    }
-                    
-                </div>
-            </div>
-        </div>
+	</head>
+	<body>
+		<div class="topbar">
+			<div class="fill">
+				<div class="container">
+					<a class="brand" href="@routes.Application.index()">CrazyDice</a>
+					
+					@if(userId != 0 && tableId != 0) {
+						<p class="pull-right">
+							Logged in as @userId —
+							<a href="@routes.Application.index()">Disconnect</a>
+						</p>
+					} else {
+						<form action="@routes.Application.game(userId, tableId)" class="pull-right">
+							<input id="userId" name="userId" class="input-small" type="text" placeholder="userId">
+							<input id="tableId" name="tableId" class="input-small" type="text" placeholder="tableId">
+							<button class="btn" type="submit">Sign in</button>
+						</form>
+					}
+				</div>
+			</div>
+		</div>
 
-        <div class="container">
-
-            <div class="content">
-                @content
-            </div>
-
-            <footer>
-                <p>
-                    <a href="http://www.CrazyDice.com">www.CrazyDice.com</a>
-                </p>
-            </footer>
-        </div>
-
-        <script src="@routes.Assets.at(GameConfigs.getAssetPath("modernizr.js"))" type="text/javascript" charset="utf-8"></script>       
+		<div class="container">
+			<div class="content">
+				@content
+			</div>
+			<footer>
+				<p>
+					<a href="http://www.CrazyDice.com">www.CrazyDice.com</a>
+				</p>
+			</footer>
+		</div>
+		
+		<script src="@routes.Assets.at(GameConfigs.getAssetPath("modernizr.js"))" type="text/javascript" charset="utf-8"></script>
 		<script src="@routes.Assets.at(GameConfigs.getAssetPath("game.js"))" type="type/javascript" charset="utf-8"></script>
-	    <script type="text/javascript" charset="utf-8">
-	    	$(document).ready = function() {
-				game.init("@routes.Application.entry(userId, tableId).webSocketURL(request)");   
-				console.log(game);
-	    	};
-	    </script>
-    </body>
+		<script type="text/javascript" charset="utf-8">
+			$(function() {
+					console.log(game);
+					game.init("@routes.Application.entry(userId, tableId).webSocketURL(request)");
+			});
+		</script>
+	</body>
 </html>

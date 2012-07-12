@@ -1,23 +1,23 @@
 @(userId: Integer, tableId: Integer)
 @import models.game._
 @main(userId, tableId) {
-    <div class="page-header">
-        <h1>Welcome to the game room <small>You are logging in as @userId</small></h1>
-    </div>
-    
-    <div id="onError" class="alert-message error">
-        <p>
-            <strong>Oops!</strong><span></span>
-        </p>
-    </div>
-    
-    <div id="onChat" class="row">
-        <div class="span10" id="main"></div>
-        <div class="span4">
-            <h2>Players</h2>
+	<div class="page-header">
+		<h1>Welcome to the game room <small>You are logging in as @userId</small></h1>
+	</div>
+	
+	<div id="onError" class="alert-message error">
+		<p>
+			<strong>Oops!</strong><span></span>
+		</p>
+	</div>
+
+	<div id="onChat" class="row">
+		<div class="span10" id="main"></div>
+		<div class="span4">
+			<h2>Players</h2>
 			<ul id="members"></ul>
 			<div id="messages"></div>
-            <textarea id="talk"></textarea>
-        </div>
-    </div>
+			<textarea id="talk"></textarea>
+		</div>
+	</div>
 }
